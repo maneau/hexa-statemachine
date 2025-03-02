@@ -16,7 +16,7 @@ public class GetFolderUseCase {
 
     final FolderPersistance folderPersistance = FolderInMemoryImpl.getInstance();
 
-    public Optional<Folder> execute(UUID dossierId) {
-        return folderPersistance.get(dossierId);
+    public Optional<Folder> execute(UUID folderId) {
+        return folderPersistance.get(folderId);
     }
 }

@@ -9,4 +9,6 @@ public interface EventQueuePersistant {
     void subscribe(CallbackFunc<Event> callbackEventFunc);
 
     Integer count();
+
+    void shutdown();
 }

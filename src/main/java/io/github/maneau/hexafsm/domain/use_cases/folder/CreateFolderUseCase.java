@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -20,6 +21,8 @@ public class CreateFolderUseCase {
         Folder folder = Folder.builder()
                 .id(UUID.randomUUID())
                 .state(StateEnum.INIT)
+                .updateTime(LocalDateTime.now())
+                .isLocked(Boolean.FALSE)
                 .name(name)
                 .build();
 

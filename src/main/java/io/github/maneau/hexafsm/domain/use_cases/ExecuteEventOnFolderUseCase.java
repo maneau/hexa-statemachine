@@ -21,8 +21,8 @@ public class ExecuteEventOnFolderUseCase {
     final GetFolderUseCase getFolderUseCase = GetFolderUseCase.getInstance();
     final EventManagementOnFolderUseCase eventManagementOnFolderUseCase = EventManagementOnFolderUseCase.getInstance();
 
-    public void execute(@NonNull UUID dossierId, @NonNull EventTypeEnum eventTypeEnum) {
-        Folder folder = getFolderUseCase.execute(dossierId)
+    public void execute(@NonNull UUID folderId, @NonNull EventTypeEnum eventTypeEnum) {
+        Folder folder = getFolderUseCase.execute(folderId)
                 .orElseThrow(() -> new TechException("Folder not found"));
         eventManagementOnFolderUseCase.execute(folder, eventTypeEnum);
     }

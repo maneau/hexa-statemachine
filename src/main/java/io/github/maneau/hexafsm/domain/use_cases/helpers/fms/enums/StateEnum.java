@@ -27,7 +27,7 @@ public enum StateEnum {
     ), ERROR("ERROR",
             List.of(new LogAction("beforeERROR")),
             List.of(new LogAction("afterERROR"))
-    ), BENCH_START("BENCH1_START",
+    ), BENCH_START("BENCH1_STA",
             List.of(new LongTimeAction("beforeBENCH1")),
             List.of(new LongTimeAction("afterBENCH1"))
     ), BENCH2("BENCH2",

@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ChangeFolderStateUseCase {
     @Getter(lazy = true)
@@ -18,6 +20,7 @@ public class ChangeFolderStateUseCase {
     public void execute(@NonNull Folder folder, @NonNull StateEnum stateEnum) {
 
         folder.setState(stateEnum);
+        folder.setUpdateTime(LocalDateTime.now());
         folderPersistance.save(folder);
 
     }

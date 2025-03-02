@@ -13,18 +13,18 @@ import java.util.UUID;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FolderInMemoryImpl implements FolderPersistance {
-    private final static Map<UUID, Folder> mapDossiers = new HashMap<>();
+    private final static Map<UUID, Folder> mapFolders = new HashMap<>();
 
     @Getter(lazy = true)
     private static final FolderInMemoryImpl instance = new FolderInMemoryImpl();
 
     @Override
-    public Optional<Folder> get(UUID dossierId) {
-        return Optional.ofNullable(mapDossiers.get(dossierId));
+    public Optional<Folder> get(UUID folderId) {
+        return Optional.ofNullable(mapFolders.get(folderId));
     }
 
     @Override
     public void save(Folder folder) {
-        mapDossiers.put(folder.getId(), folder);
+        mapFolders.put(folder.getId(), folder);
     }
 }

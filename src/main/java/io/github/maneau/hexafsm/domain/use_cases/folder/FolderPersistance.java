@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface FolderPersistance {
 
-    Optional<Folder> get(UUID dossierId);
+    Optional<Folder> get(UUID folderId);
 
     void save(Folder folder);
 }

@@ -51,4 +51,9 @@ public class EventQueueInMemoryUsingSchedulerExecutorImpl implements EventQueueP
     public Integer count() {
         return queue.size();
     }
+
+    @Override
+    public void shutdown() {
+
+    }
 }

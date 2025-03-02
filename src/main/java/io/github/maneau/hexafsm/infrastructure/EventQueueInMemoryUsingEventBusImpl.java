@@ -49,4 +49,9 @@ public class EventQueueInMemoryUsingEventBusImpl implements EventQueuePersistant
     public Integer count() {
         return eventCount.get();
     }
+
+    @Override
+    public void shutdown() {
+
+    }
 }

@@ -21,6 +21,12 @@ public class AsyncJobListenAndTreatEvent implements CallbackFunc<Event> {
         }
     }
 
+    public static void finish() {
+        if(!isNull(instance)) {
+            instance.eventQueuePersistant.shutdown();
+        }
+    }
+
     private AsyncJobListenAndTreatEvent() {
         eventQueuePersistant.subscribe(this);
     }

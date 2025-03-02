@@ -20,10 +20,10 @@ public class NotifyEventOnFolderUseCase {
 
     final EventQueuePersistant eventQueuePersistant = EventQueueInMemoryUsingThreadImpl.getInstance();
 
-    public void execute(@NonNull UUID dossierId, @NonNull EventTypeEnum eventTypeEnum) {
+    public void execute(@NonNull UUID folderId, @NonNull EventTypeEnum eventTypeEnum) {
         Event event = Event.builder()
                 .date(LocalDateTime.now())
-                .folderId(dossierId)
+                .folderId(folderId)
                 .type(eventTypeEnum)
                 .build();
         eventQueuePersistant.publish(event);
