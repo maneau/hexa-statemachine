@@ -4,7 +4,7 @@ import io.github.maneau.hexafsm.domain.entities.Folder;
 import io.github.maneau.hexafsm.domain.exceptions.TechException;
 import io.github.maneau.hexafsm.domain.use_cases.folder.GetFolderUseCase;
 import io.github.maneau.hexafsm.domain.use_cases.helpers.fms.EventManagementOnFolderUseCase;
-import io.github.maneau.hexafsm.domain.use_cases.helpers.fms.enums.EventEnum;
+import io.github.maneau.hexafsm.domain.use_cases.helpers.fms.enums.EventTypeEnum;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,10 +21,10 @@ public class ExecuteEventOnFolderUseCase {
     final GetFolderUseCase getFolderUseCase = GetFolderUseCase.getInstance();
     final EventManagementOnFolderUseCase eventManagementOnFolderUseCase = EventManagementOnFolderUseCase.getInstance();
 
-    public void execute(@NonNull UUID dossierId, @NonNull EventEnum eventEnum) {
+    public void execute(@NonNull UUID dossierId, @NonNull EventTypeEnum eventTypeEnum) {
         Folder folder = getFolderUseCase.execute(dossierId)
                 .orElseThrow(() -> new TechException("Folder not found"));
-        eventManagementOnFolderUseCase.execute(folder, eventEnum);
+        eventManagementOnFolderUseCase.execute(folder, eventTypeEnum);
     }
 
 }

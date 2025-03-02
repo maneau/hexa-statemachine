@@ -2,7 +2,7 @@ package io.github.maneau.hexafsm.domain.use_cases;
 
 import io.github.maneau.hexafsm.domain.entities.Event;
 import io.github.maneau.hexafsm.domain.use_cases.helpers.evts.EventQueuePersistant;
-import io.github.maneau.hexafsm.domain.use_cases.helpers.fms.enums.EventEnum;
+import io.github.maneau.hexafsm.domain.use_cases.helpers.fms.enums.EventTypeEnum;
 import io.github.maneau.hexafsm.infrastructure.EventQueueInMemoryUsingThreadImpl;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -20,11 +20,11 @@ public class NotifyEventOnFolderUseCase {
 
     final EventQueuePersistant eventQueuePersistant = EventQueueInMemoryUsingThreadImpl.getInstance();
 
-    public void execute(@NonNull UUID dossierId, @NonNull EventEnum eventEnum) {
+    public void execute(@NonNull UUID dossierId, @NonNull EventTypeEnum eventTypeEnum) {
         Event event = Event.builder()
                 .date(LocalDateTime.now())
                 .folderId(dossierId)
-                .eventType(eventEnum)
+                .type(eventTypeEnum)
                 .build();
         eventQueuePersistant.publish(event);
     }

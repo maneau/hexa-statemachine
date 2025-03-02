@@ -27,12 +27,12 @@ public class AsyncJobListenAndTreatEvent implements CallbackFunc<Event> {
 
     @Override
     public void execute(Event event) {
-        log.debug("Execute event {} on folder {}", event.getEventType(), event.getFolderId());
+        log.debug("Execute event {} on folder {}", event.getType(), event.getFolderId());
         long startTime = System.currentTimeMillis();
 
-        executeEventOnFolderUseCase.execute(event.getFolderId(), event.getEventType());
+        executeEventOnFolderUseCase.execute(event.getFolderId(), event.getType());
 
         long duration = System.currentTimeMillis() - startTime;
-        log.info("Execution of event {} on folder {} takes {}ms", event.getEventType(), event.getFolderId(), duration);
+        log.info("Execution of event {} on folder {} takes {}ms", event.getType(), event.getFolderId(), duration);
     }
 }

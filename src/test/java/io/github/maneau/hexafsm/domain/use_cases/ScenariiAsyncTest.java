@@ -4,7 +4,7 @@ import io.github.maneau.hexafsm.domain.entities.Folder;
 import io.github.maneau.hexafsm.domain.use_cases.folder.CreateFolderUseCase;
 import io.github.maneau.hexafsm.domain.use_cases.folder.FolderPersistance;
 import io.github.maneau.hexafsm.domain.use_cases.helpers.evts.AsyncJobListenAndTreatEvent;
-import io.github.maneau.hexafsm.domain.use_cases.helpers.fms.enums.EventEnum;
+import io.github.maneau.hexafsm.domain.use_cases.helpers.fms.enums.EventTypeEnum;
 import io.github.maneau.hexafsm.domain.use_cases.helpers.fms.enums.StateEnum;
 import io.github.maneau.hexafsm.infrastructure.FolderInMemoryImpl;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ public class ScenariiAsyncTest {
         Folder folder = createFolderUseCase.execute("testAsync");
         assertThat(folderPersistance.get(folder.getId()).map(Folder::getState)).hasValue(StateEnum.INIT);
 
-        notifyEventOnFolderUseCase.execute(folder.getId(), EventEnum.EVT_EDIT);
+        notifyEventOnFolderUseCase.execute(folder.getId(), EventTypeEnum.EVT_EDIT);
 
         // Then
         assertThat(folderPersistance.get(folder.getId()).map(Folder::getState)).hasValue(StateEnum.INIT);

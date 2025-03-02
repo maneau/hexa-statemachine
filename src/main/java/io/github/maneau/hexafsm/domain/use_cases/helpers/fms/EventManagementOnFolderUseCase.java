@@ -3,7 +3,7 @@ package io.github.maneau.hexafsm.domain.use_cases.helpers.fms;
 import io.github.maneau.hexafsm.domain.entities.Folder;
 import io.github.maneau.hexafsm.domain.exceptions.TechException;
 import io.github.maneau.hexafsm.domain.use_cases.folder.ChangeFolderStateUseCase;
-import io.github.maneau.hexafsm.domain.use_cases.helpers.fms.enums.EventEnum;
+import io.github.maneau.hexafsm.domain.use_cases.helpers.fms.enums.EventTypeEnum;
 import io.github.maneau.hexafsm.domain.use_cases.helpers.fms.enums.LinkEnum;
 import io.github.maneau.hexafsm.domain.use_cases.helpers.fms.enums.StateEnum;
 import lombok.AccessLevel;
@@ -24,7 +24,7 @@ public class EventManagementOnFolderUseCase {
     @Getter(lazy = true)
     private static final EventManagementOnFolderUseCase instance = new EventManagementOnFolderUseCase();
 
-    public void execute(@NonNull Folder dos, @NonNull EventEnum evt) {
+    public void execute(@NonNull Folder dos, @NonNull EventTypeEnum evt) {
         List<LinkEnum> links = Arrays.stream(LinkEnum.values())
                 .filter(l -> l.getEvent() == evt)
                 .filter(l -> l.getFrom() == dos.getState())

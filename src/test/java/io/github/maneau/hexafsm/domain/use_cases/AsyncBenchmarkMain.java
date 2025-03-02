@@ -8,7 +8,7 @@ import io.github.maneau.hexafsm.domain.use_cases.folder.CreateFolderUseCase;
 import io.github.maneau.hexafsm.domain.use_cases.folder.FolderPersistance;
 import io.github.maneau.hexafsm.domain.use_cases.helpers.evts.EventQueuePersistant;
 import io.github.maneau.hexafsm.domain.use_cases.helpers.evts.AsyncJobListenAndTreatEvent;
-import io.github.maneau.hexafsm.domain.use_cases.helpers.fms.enums.EventEnum;
+import io.github.maneau.hexafsm.domain.use_cases.helpers.fms.enums.EventTypeEnum;
 import io.github.maneau.hexafsm.domain.use_cases.helpers.fms.enums.StateEnum;
 import io.github.maneau.hexafsm.infrastructure.FolderInMemoryImpl;
 import io.github.maneau.hexafsm.infrastructure.EventQueueInMemoryUsingThreadImpl;
@@ -28,9 +28,9 @@ public class AsyncBenchmarkMain {
     private static final int N_THREADS = 20; // Nombre de threads pour le traitement en parallèle
     private static final Random RANDOM = new Random();
 
-    private static final List<EventEnum> EVENT_ENUMS = List.of(EventEnum.EVT_BENCH1_OK, EventEnum.EVT_BENCH2_OK,
-            EventEnum.EVT_BENCH3_OK, EventEnum.EVT_BENCH4_OK, EventEnum.EVT_BENCH5_OK, EventEnum.EVT_BENCH6_OK,
-            EventEnum.EVT_BENCH7_OK, EventEnum.EVT_BENCH8_OK, EventEnum.EVT_BENCH19_OK);
+    private static final List<EventTypeEnum> EVENT_ENUMS = List.of(EventTypeEnum.EVT_BENCH1_OK, EventTypeEnum.EVT_BENCH2_OK,
+            EventTypeEnum.EVT_BENCH3_OK, EventTypeEnum.EVT_BENCH4_OK, EventTypeEnum.EVT_BENCH5_OK, EventTypeEnum.EVT_BENCH6_OK,
+            EventTypeEnum.EVT_BENCH7_OK, EventTypeEnum.EVT_BENCH8_OK, EventTypeEnum.EVT_BENCH19_OK);
 
     private static final CreateFolderUseCase CREATE_DOSSIER_USE_CASE = CreateFolderUseCase.getInstance();
     private static final NotifyEventOnFolderUseCase NOTIFY_EVENT_ON_FOLDER_USE_CASE =
@@ -130,10 +130,10 @@ public class AsyncBenchmarkMain {
                 .count();
     }
 
-    private static ExecutorService executeEventProducer(List<UUID> dossierIds, List<EventEnum> eventEnums) {
+    private static ExecutorService executeEventProducer(List<UUID> dossierIds, List<EventTypeEnum> eventTypeEnums) {
         Runnable sendTask = () -> {
             UUID randomDossierId = dossierIds.get(RANDOM.nextInt(dossierIds.size()));
-            EventEnum randomEvent = eventEnums.get(RANDOM.nextInt(eventEnums.size()));
+            EventTypeEnum randomEvent = eventTypeEnums.get(RANDOM.nextInt(eventTypeEnums.size()));
 
             NOTIFY_EVENT_ON_FOLDER_USE_CASE.execute(randomDossierId, randomEvent);
         };
