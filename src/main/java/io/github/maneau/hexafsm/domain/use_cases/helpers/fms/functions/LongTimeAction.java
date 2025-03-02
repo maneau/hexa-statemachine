@@ -15,12 +15,12 @@ public class LongTimeAction implements CallbackFunc<Folder> {
     @Override
     public void execute(Folder folder) throws TechException {
         log.info("folder {} action start {}", folder.getName(), actionName);
-        //System.out.println("action started on " + folder.getName() + " " + actionName);
         try {
             Thread.sleep(SLEEP_TIME);
-        } catch (InterruptedException ignored) {
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return;
         }
-        //System.out.println("action ended   on " + folder.getName() + " " + actionName);
         log.info("folder {} action ended {}", folder.getName(), actionName);
     }
 }

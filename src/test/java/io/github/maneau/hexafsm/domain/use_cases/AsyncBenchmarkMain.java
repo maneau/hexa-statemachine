@@ -32,9 +32,9 @@ import static java.lang.String.format;
  * Change the log level LOG_LEVEL = Level.WARN to view lock usage
  */
 public class AsyncBenchmarkMain {
-    private static final int MAX_DURATION_IN_MINUTES = 1;
+    private static final int MAX_DURATION_IN_MINUTES = 9;
     private static final int NB_FOLDER_TO_BENCH = 100;
-    private static final int N_THREADS_FOR_SEND_EVENTS = 20;
+    private static final int N_THREADS_FOR_SEND_EVENTS = 10;
     private static final int MAX_KEY_LENGTH = 11;
     private static final Random RANDOM = new Random();
     public static final Level LOG_LEVEL = Level.WARN;
@@ -58,10 +58,12 @@ public class AsyncBenchmarkMain {
         ExecutorService eventProducer = executeEventProducer(dossierIds, EVENT_ENUMS);
         boolean isSuccess = waitUntilAllDossierInBench9orTimedOut(dossierIds, MAX_DURATION_IN_MINUTES);
         conclusion(isSuccess, dossierIds, startTime);
-        AsyncJobListenAndTreatEvent.finish();
-        eventProducer.shutdown();
+        finish(eventProducer);
+    }
 
-        System.exit(0);
+    private static void finish(ExecutorService eventProducer) {
+        AsyncJobListenAndTreatEvent.finish();
+        eventProducer.shutdownNow();
     }
 
     public static List<UUID> init() {

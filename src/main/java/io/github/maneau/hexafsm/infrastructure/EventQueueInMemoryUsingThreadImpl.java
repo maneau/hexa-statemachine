@@ -15,7 +15,7 @@ import java.util.concurrent.*;
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class EventQueueInMemoryUsingThreadImpl implements EventQueuePersistant {
-    private static final int N_THREADS = 20;
+    private static final int N_THREADS = 10;
     private static final BlockingQueue<Event> queue = new LinkedBlockingQueue<>();
     private static final List<Thread> workerThreads = new ArrayList<>();
 
@@ -60,19 +60,23 @@ public class EventQueueInMemoryUsingThreadImpl implements EventQueuePersistant {
 
         @Override
         public void run() {
-            log.info("Starting thread#{}", threadNumber);
-            do {
-                try {
-                    Event event = queue.take();
-                    callbackEventFunc.execute(event);
-                } catch (InterruptedException e) {
-                    log.warn("Thread#{} interrupt called {}", threadNumber, e.getMessage());
-                    Thread.currentThread().interrupt();
-                    return;
-                } catch (Exception e) {
-                    log.error("Thread#{} exception {}", threadNumber, e.getMessage());
+            try {
+                log.info("Starting thread#{}", threadNumber);
+                while (!Thread.currentThread().isInterrupted()) {
+                    try {
+                        Event event = queue.take();
+                        callbackEventFunc.execute(event);
+                    } catch (InterruptedException e) {
+                        log.info("Thread#{} interrupt called {}", threadNumber, e.getMessage());
+                        Thread.currentThread().interrupt();
+                        break;
+                    } catch (Exception e) {
+                        log.error("Thread#{} exception {}", threadNumber, e.getMessage());
+                    }
                 }
-            } while (true);
+            } finally {
+                log.info("Thread#{} is stopping.", threadNumber);
+            }
         }
     }
 }
