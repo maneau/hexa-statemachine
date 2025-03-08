@@ -9,6 +9,7 @@ import io.github.maneau.hexafsm.domain.use_cases.folder.UnlockTheFolderUseCase;
 import io.github.maneau.hexafsm.domain.use_cases.helpers.fms.enums.EventTypeEnum;
 import io.github.maneau.hexafsm.domain.use_cases.helpers.fms.enums.LinkEnum;
 import io.github.maneau.hexafsm.domain.use_cases.helpers.fms.enums.StateEnum;
+import io.github.maneau.hexafsm.domain.use_cases.helpers.fms.functions.CallbackFunc;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,11 +48,11 @@ public class EventManagementOnFolderUseCase {
             log.info("Folder '{}' [{}->{}] via event '{}'",
                     folder.getName(), folder.getState().getName(), link.getTo().getName(), evt.name());
 
-            executeChangeState(folder, link.getFrom(), link.getTo(), link.getFailed());
+            executeChangeState(folder, link.getTo(), link.getFailed(), link.getActions());
         }
     }
 
-    private void executeChangeState(@NonNull Folder folder, StateEnum fromState, StateEnum toState, StateEnum errState) {
+    private void executeChangeState(@NonNull Folder folder, StateEnum toState, StateEnum errState, List<CallbackFunc<Folder>> actions) {
         //Pessimist lock: we control the lock
         Optional<FolderLock> folderLock = tryToLockTheFolderUseCase.execute(folder);
         if(folderLock.isEmpty()) {
@@ -59,11 +60,8 @@ public class EventManagementOnFolderUseCase {
         } else {
             try {
                 final LocalDateTime startTime = folder.getUpdateTime();
-                //Execute after current State
-                fromState.getAfterFunc().forEach(f -> f.execute(folder));
 
-                //Execute before next State
-                toState.getBeforeFunc().forEach(f -> f.execute(folder));
+                actions.forEach(f -> f.execute(folder));
 
                 final LocalDateTime endTime = folder.getUpdateTime();
                 //Optimise lock control
@@ -81,7 +79,6 @@ public class EventManagementOnFolderUseCase {
                 log.info("folder '{}' [{}->{}] via failed {}",
                         folder.getName(), folder.getState().getName(), errState.getName(), e.getMessage());
 
-                errState.getBeforeFunc().forEach(f -> f.execute(folder));
             } finally {
                 unlockTheFolderUseCase.execute(folderLock.get());
             }

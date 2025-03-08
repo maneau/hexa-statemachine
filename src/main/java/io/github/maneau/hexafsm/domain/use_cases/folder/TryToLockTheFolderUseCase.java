@@ -14,7 +14,6 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TryToLockTheFolderUseCase {
     public static final boolean LOCK = true;
-    public static final boolean UNLOCK = false;
 
     @Getter(lazy = true)
     private static final TryToLockTheFolderUseCase instance = new TryToLockTheFolderUseCase();

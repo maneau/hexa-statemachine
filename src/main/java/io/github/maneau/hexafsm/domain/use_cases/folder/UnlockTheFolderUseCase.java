@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UnlockTheFolderUseCase {
-    public static final boolean LOCK = true;
     public static final boolean UNLOCK = false;
 
     @Getter(lazy = true)
@@ -25,7 +24,7 @@ public class UnlockTheFolderUseCase {
     final FolderPersistance folderPersistance = FolderInMemoryImpl.getInstance();
     final GetFolderUseCase getFolderUseCase = GetFolderUseCase.getInstance();
 
-    public boolean execute(@NonNull FolderLock folderLock) {
+    public void execute(@NonNull FolderLock folderLock) {
         Folder folder = getFolderUseCase.execute(folderLock.getFolderId())
                 .orElseThrow(() -> new TechException("Folder id not founded" + folderLock.getFolderId()));
         if (UNLOCK == folder.getIsLocked()) {
@@ -33,13 +32,12 @@ public class UnlockTheFolderUseCase {
                 log.error("Integrity failed, the lock date has change on folder '{}'", folder.getName());
                 throw new DataIntegrityException("Integrity failed, the lock date has change");
             } else {
-                return false;
+                log.debug("Integrity is ok, the lock date has not changed on folder '{}'", folder.getName());
             }
         } else {
             folder.setIsLocked(UNLOCK);
             folder.setLockTime(LocalDateTime.now());
             folderPersistance.save(folder);
-            return true;
         }
     }
 }

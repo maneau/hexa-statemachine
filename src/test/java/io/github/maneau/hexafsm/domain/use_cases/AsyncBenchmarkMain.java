@@ -37,7 +37,7 @@ public class AsyncBenchmarkMain {
     private static final int N_THREADS_FOR_SEND_EVENTS = 10;
     private static final int MAX_KEY_LENGTH = 11;
     private static final Random RANDOM = new Random();
-    public static final Level LOG_LEVEL = Level.WARN;
+    public static final Level LOG_LEVEL = Level.ERROR; // Set WARN to see Locks
     private static String title;
 
     private static final List<EventTypeEnum> EVENT_ENUMS = List.of(EventTypeEnum.EVT_BENCH1_OK, EventTypeEnum.EVT_BENCH2_OK,
